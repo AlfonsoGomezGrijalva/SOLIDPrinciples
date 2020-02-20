@@ -9,7 +9,7 @@ namespace SOLID_Principles.OCP
     {
         public Rater Create(Policy policy, RatingEngine engine)
         {
-            #region after using reflection
+            #region before using reflection
             //switch (policy.Type)
             //{
             //    case PolicyType.Auto:
