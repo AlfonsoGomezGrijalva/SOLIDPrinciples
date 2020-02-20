@@ -26,7 +26,7 @@ namespace SOLIDPrinciples
             string policyJson = PolicySource.GetPolicyFromSource();
             var policy = PolicySerializer.GetPolicyFromJsonString(policyJson);
 
-            #region After implement Factory
+            #region Before implement Factory
             //switch (policy.Type)
             //{
             //    case PolicyType.Auto:
