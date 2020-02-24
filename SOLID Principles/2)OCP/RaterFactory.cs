@@ -1,4 +1,5 @@
-﻿using SOLIDPrinciples;
+﻿using SOLID_Principles.LSP;
+using SOLIDPrinciples;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,7 +37,7 @@ namespace SOLID_Principles.OCP
             }
             catch
             {
-                return null;
+                return new UnknownPolicyRater(engine, engine.Logger);
             }
         }
     }

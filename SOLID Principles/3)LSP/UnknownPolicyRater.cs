@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SOLID_Principles.OCP;
 using SOLID_Principles.SRP;
 using SOLIDPrinciples;
 
-namespace SOLID_Principles.OCP
+namespace SOLID_Principles.LSP
 {
     public class UnknownPolicyRater : Rater
     {

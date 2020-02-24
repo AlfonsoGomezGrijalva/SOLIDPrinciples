@@ -19,7 +19,7 @@ namespace SOLIDPrinciples
         public decimal Rating { get; set; }
 
         public void Rate()
-        { 
+        {
             Logger.Log("Starting rate.");
             Logger.Log("Loading policy.");
 
@@ -54,7 +54,8 @@ namespace SOLIDPrinciples
             var factory = new RaterFactory();
 
             var rater = factory.Create(policy, this);
-            rater?.Rate(policy);
+
+            rater.Rate(policy);
 
             Logger.Log("Rating completed.");
         }
