@@ -1,4 +1,5 @@
-﻿using SOLID_Principles.LSP;
+﻿using SOLID_Principles.ISP;
+using SOLID_Principles.LSP;
 using SOLIDPrinciples;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace SOLID_Principles.OCP
 {
     public class RaterFactory
     {
-        public Rater Create(Policy policy, RatingEngine engine)
+        public Rater Create(Policy policy, IRatingContext context)
         {
             #region before using reflection
             //switch (policy.Type)
@@ -33,11 +34,11 @@ namespace SOLID_Principles.OCP
 
             try
             {
-                return (Rater)Activator.CreateInstance(Type.GetType($"SOLID_Principles.OCP.{policy.Type}PolicyRater"), new object[] { engine, engine.Logger });
+                return (Rater)Activator.CreateInstance(Type.GetType($"SOLID_Principles.OCP.{policy.Type}PolicyRater"), new object[] { new RatingUpdater(context.Engine) });
             }
             catch
             {
-                return new UnknownPolicyRater(engine, engine.Logger);
+                return new UnknownPolicyRater(new RatingUpdater(context.Engine));
             }
         }
     }
