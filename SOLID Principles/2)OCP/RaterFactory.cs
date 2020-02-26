@@ -9,7 +9,13 @@ namespace SOLID_Principles.OCP
 {
     public class RaterFactory
     {
-        public Rater Create(Policy policy, IRatingContext context)
+        private readonly ILogger _logger;
+
+        public RaterFactory(ILogger logger)
+        {
+            _logger = logger;
+        }
+        public Rater Create(Policy policy)
         {
             #region before using reflection
             //switch (policy.Type)
@@ -34,11 +40,11 @@ namespace SOLID_Principles.OCP
 
             try
             {
-                return (Rater)Activator.CreateInstance(Type.GetType($"SOLID_Principles.OCP.{policy.Type}PolicyRater"), new object[] { new RatingUpdater(context.Engine) });
+                return (Rater)Activator.CreateInstance(Type.GetType($"SOLID_Principles.OCP.{policy.Type}PolicyRater"), new object[] { _logger });
             }
             catch
             {
-                return new UnknownPolicyRater(new RatingUpdater(context.Engine));
+                return new UnknownPolicyRater(_logger);
             }
         }
     }
