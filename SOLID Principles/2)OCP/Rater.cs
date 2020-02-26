@@ -6,13 +6,12 @@ namespace SOLID_Principles.OCP
 {
     public abstract class Rater
     {
-        protected readonly IRatingUpdater _ratingUpdater;
-        protected ILogger Logger { get; set; } = new ConsoleLogger();
+        protected ILogger Logger { get; set; }
 
-        public Rater(IRatingUpdater ratingUpdater)
+        public Rater(ILogger logger)
         {
-            _ratingUpdater = ratingUpdater;
+            Logger = logger;
         }
-        public abstract void Rate(Policy policy);
+        public abstract decimal Rate(Policy policy);
     }
 }

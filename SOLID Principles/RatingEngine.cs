@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using SOLID_Principles.DIP;
 using SOLID_Principles.ISP;
 using SOLID_Principles.OCP;
 using SOLID_Principles.SRP;
@@ -19,20 +20,27 @@ namespace SOLIDPrinciples
         //public FilePolicySource PolicySource { get; set; } = new FilePolicySource(); // Persistence is delegated
         //public PolicySerializer PolicySerializer { get; set; } = new PolicySerializer(); //Encoding Format is delegated
         #endregion
-        public IRatingContext _ratingContext { get; set; } = new DefaultRatingContext();
+        private readonly ILogger _logger; // DIP 
+        private readonly IPolicySource _policySource;
+        private readonly IPolicySerializer _policySerializer;
+        private readonly RaterFactory _raterFactory;
+
         public decimal Rating { get; set; }
 
-        public RatingEngine()
-        {
-            _ratingContext.Engine = this;
+        public RatingEngine(ILogger logger, IPolicySource policySource, IPolicySerializer policySerializer, RaterFactory raterFactory)
+        {            
+            _logger = logger;
+            _policySource = policySource;
+            _policySerializer = policySerializer;
+            _raterFactory = raterFactory;
         }
         public void Rate()
         {
-            _ratingContext.Log("Starting rate.");
-            _ratingContext.Log("Loading policy.");
+            _logger.Log("Starting rate.");
+            _logger.Log("Loading policy.");
 
-            string policyJson = _ratingContext.LoadPolicyFromFile();
-            var policy = _ratingContext.GetPolicyFromJsonString(policyJson);
+            string policyJson = _policySource.GetPolicyFromSource();
+            var policy = _policySerializer.GetPolicyFromString(policyJson);
 
             #region Before implement Factory
             //switch (policy.Type)
@@ -66,11 +74,11 @@ namespace SOLIDPrinciples
 
             #endregion
 
-            var rater = _ratingContext.CreateRaterForPolicy(policy, _ratingContext);
+            var rater = _raterFactory.Create(policy);
 
             rater.Rate(policy);
 
-            _ratingContext.Log("Rating completed.");
+            _logger.Log("Rating completed.");
         }
     }
 }
