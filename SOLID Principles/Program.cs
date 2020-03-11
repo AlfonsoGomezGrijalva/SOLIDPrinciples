@@ -1,16 +1,17 @@
-﻿using SOLID_Principles.DIP;
-using SOLID_Principles.OCP;
-using SOLID_Principles.SRP;
+﻿using SOLID.Service.Loggers;
+using SOLID.Service.Policy;
+using SOLID.Service.Policy.Serializer;
+using SOLID.Service.Rater;
 using System;
 
-namespace SOLIDPrinciples
+namespace SOLID
 {
     class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Insurance Rating System Starting...");
-            var logger = new FileLogger();
+            var logger = new ConsoleLogger();
 
             var engine = new RatingEngine(logger, new FilePolicySource(), new PolicySerializer(), new RaterFactory(logger));
             engine.Rate();
